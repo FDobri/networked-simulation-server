@@ -1,0 +1,7 @@
+namespace wire;
+
+table Input {
+    sequence:uint;
+    dx:byte;
+    dy:byte;
+}
