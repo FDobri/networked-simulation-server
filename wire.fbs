@@ -1,7 +1,20 @@
 namespace wire;
 
+struct Body {
+    id:uint;
+    x:float;
+    y:float;
+}
+
 table Input {
     sequence:uint;
     dx:byte;
     dy:byte;
+}
+
+table Snapshot {
+    tick:ulong;
+    ack:uint;
+    self:uint;
+    bodies:[Body];
 }
