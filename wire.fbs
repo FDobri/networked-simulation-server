@@ -18,3 +18,8 @@ table Snapshot {
     self:uint;
     bodies:[Body];
 }
+
+union Payload { Input, Snapshot }
+table Packet { payload:Payload; }
+root_type Packet;
+file_identifier "SIM1";
