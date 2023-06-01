@@ -1,5 +1,16 @@
 cmake_minimum_required(VERSION 3.24)
 project(networked_simulation LANGUAGES CXX)
+include(FetchContent)
 find_package(Threads REQUIRED)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(FLATBUFFERS_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(FLATBUFFERS_BUILD_FLATLIB OFF CACHE BOOL "" FORCE)
+set(FLATBUFFERS_INSTALL OFF CACHE BOOL "" FORCE)
+FetchContent_Declare(flatbuffers URL https://codeload.github.com/google/flatbuffers/tar.gz/refs/tags/v25.2.10)
+FetchContent_Declare(asio URL https://codeload.github.com/chriskohlhoff/asio/tar.gz/refs/tags/asio-1-30-2)
+FetchContent_MakeAvailable(flatbuffers asio)
+add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/wire_generated.h"
+    COMMAND flatc --cpp -o "${CMAKE_CURRENT_BINARY_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}/wire.fbs"
+    DEPENDS flatc wire.fbs VERBATIM)
+add_custom_target(protocol DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/wire_generated.h")
