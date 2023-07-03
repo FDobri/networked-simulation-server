@@ -21,3 +21,7 @@ inline int integer(std::string_view text, int min, int max) {
         throw std::invalid_argument("numeric argument out of range");
     return value;
 }
+inline const wire::Packet* decode(const Datagram& data, std::size_t size) {
+    flatbuffers::Verifier verifier(data.data(), size, 8, 16);
+    return wire::VerifyPacketBuffer(verifier) ? wire::GetPacket(data.data()) : nullptr;
+}
