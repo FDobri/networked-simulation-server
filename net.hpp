@@ -25,3 +25,15 @@ inline const wire::Packet* decode(const Datagram& data, std::size_t size) {
     flatbuffers::Verifier verifier(data.data(), size, 8, 16);
     return wire::VerifyPacketBuffer(verifier) ? wire::GetPacket(data.data()) : nullptr;
 }
+inline bool transient(const asio::error_code& error) {
+    return error == asio::error::would_block || error == asio::error::try_again ||
+           error == asio::error::message_size || error == asio::error::connection_reset ||
+           error == asio::error::connection_refused;
+}
+inline std::size_t send(udp::socket& socket, const flatbuffers::FlatBufferBuilder& builder,
+                        const udp::endpoint& to) {
+    asio::error_code error;
+    auto size = socket.send_to(asio::buffer(builder.GetBufferPointer(), builder.GetSize()), to, 0, error);
+    if (error && !transient(error)) throw asio::system_error(error);
+    return error ? 0 : size;
+}
