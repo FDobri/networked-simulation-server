@@ -14,3 +14,15 @@ add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/wire_generated.h"
     COMMAND flatc --cpp -o "${CMAKE_CURRENT_BINARY_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}/wire.fbs"
     DEPENDS flatc wire.fbs VERBATIM)
 add_custom_target(protocol DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/wire_generated.h")
+foreach(target sim_server)
+    add_executable(${target} ${target}.cpp)
+    add_dependencies(${target} protocol)
+    target_include_directories(${target} PRIVATE "${CMAKE_CURRENT_BINARY_DIR}"
+        "${asio_SOURCE_DIR}/asio/include" "${flatbuffers_SOURCE_DIR}/include")
+    target_compile_definitions(${target} PRIVATE ASIO_STANDALONE)
+    target_link_libraries(${target} PRIVATE Threads::Threads)
+    if(WIN32)
+        target_compile_definitions(${target} PRIVATE _WIN32_WINNT=0x0A00)
+        target_link_libraries(${target} PRIVATE ws2_32 mswsock)
+    endif()
+endforeach()
