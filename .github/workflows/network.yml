@@ -1,0 +1,20 @@
+name: Network validation
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build the Release container
+        run: docker build -t cpp-sim .
+      - name: Measure baseline and impaired loopback
+        run: |
+          set -euo pipefail
+          docker run --rm cpp-sim python3 /opt/sim/measure.py /usr/local/bin/sim_server /usr/local/bin/sim_load | tee baseline.txt
