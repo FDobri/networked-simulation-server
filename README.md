@@ -8,3 +8,7 @@ cmake --build build --config Release --parallel
 ctest --test-dir build -C Release --output-on-failure
 python3 measure.py build/sim_server build/sim_load --counts 1 8 32 64 --seconds 5
 ```
+
+On Windows with a multi-config generator, supply `build/Release/sim_server.exe` and `build/Release/sim_load.exe`. The server prints its chosen port when started with port 0. Exit after the optional duration or stop with Ctrl+C.
+
+## Design and measurements
