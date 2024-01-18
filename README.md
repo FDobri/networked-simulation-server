@@ -12,3 +12,5 @@ python3 measure.py build/sim_server build/sim_load --counts 1 8 32 64 --seconds 
 On Windows with a multi-config generator, supply `build/Release/sim_server.exe` and `build/Release/sim_load.exe`. The server prints its chosen port when started with port 0. Exit after the optional duration or stop with Ctrl+C.
 
 ## Design and measurements
+
+A single event loop owns simulation and network state. Incoming datagrams are verified, inputs have monotonic sequence numbers, stale clients expire after three seconds and the receive budget is bounded per tick. Snapshots are full-state and fit within the 1,200-byte receive buffer. This is a local simulation prototype whose client identity is the UDP endpoint.
