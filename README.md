@@ -14,3 +14,5 @@ On Windows with a multi-config generator, supply `build/Release/sim_server.exe` 
 ## Design and measurements
 
 A single event loop owns simulation and network state. Incoming datagrams are verified, inputs have monotonic sequence numbers, stale clients expire after three seconds and the receive budget is bounded per tick. Snapshots are full-state and fit within the 1,200-byte receive buffer. This is a local simulation prototype whose client identity is the UDP endpoint.
+
+The server reports mean and maximum tick work, overruns and UDP payload bytes over 60 ticks. The load client reports observed gaps in snapshot ticks and p95 input acknowledgment latency, including client polling delay. Runs discard packets outside the first and last observed ticks when measuring gaps. Record CPU, OS, compiler, build configuration, duration and `tc` configuration alongside results.
