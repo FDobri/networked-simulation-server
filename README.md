@@ -24,3 +24,14 @@ docker build -t cpp-sim .
 docker run --rm cpp-sim python3 /opt/sim/measure.py /usr/local/bin/sim_server /usr/local/bin/sim_load
 docker run --rm --cap-add NET_ADMIN cpp-sim sh -c 'tc qdisc add dev lo root netem delay 40ms 10ms loss 2% && python3 /opt/sim/measure.py /usr/local/bin/sim_server /usr/local/bin/sim_load'
 ```
+
+## Local results
+
+Windows 10 22H2, Ryzen 7 3700X, MSVC 19.44 x64 Release, 3 seconds per client count on the same host. The acknowledgment metric includes the load client's polling interval and OS scheduling.
+
+| Clients | Snapshots received | Gaps | p95 acknowledgment (ms) |
+| ---: | ---: | ---: | ---: |
+| 1 | 60 | 0 | 77.53 |
+| 8 | 480 | 0 | 77.97 |
+| 32 | 1664 | 0 | 125.26 |
+| 64 | 3776 | 0 | 108.57 |
