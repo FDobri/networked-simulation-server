@@ -35,3 +35,5 @@ Windows 10 22H2, Ryzen 7 3700X, MSVC 19.44 x64 Release, 3 seconds per client cou
 | 8 | 480 | 0 | 77.97 |
 | 32 | 1664 | 0 | 125.26 |
 | 64 | 3776 | 0 | 108.57 |
+
+The [Network validation workflow](https://github.com/FDobri/networked-simulation-server/actions/workflows/network.yml) runs five-second cases in a Release container on Ubuntu and attaches the baseline and impaired reports to each run.
