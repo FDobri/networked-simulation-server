@@ -37,3 +37,16 @@ Windows 10 22H2, Ryzen 7 3700X, MSVC 19.44 x64 Release, 3 seconds per client cou
 | 64 | 3776 | 0 | 108.57 |
 
 The [Network validation workflow](https://github.com/FDobri/networked-simulation-server/actions/workflows/network.yml) runs five-second cases in a Release container on Ubuntu and attaches the baseline and impaired reports to each run.
+
+## Linux delay and packet loss results
+
+[GitHub Actions run 43633090485](https://github.com/FDobri/networked-simulation-server/actions/runs/43633090485) used Ubuntu 24.04, two AMD EPYC 9V74 vCPUs, GCC 13.3 Release in Docker and iproute2 6.1.0. Each case ran for five seconds on loopback. The impaired case configured 40 ms delay, 10 ms variation and 2% loss per traversed packet.
+
+| Clients | Baseline gaps | Impaired gaps | Baseline p95 (ms) | Impaired p95 (ms) |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 0 | 2 | 33.35 | 133.34 |
+| 8 | 0 | 25 | 33.35 | 133.34 |
+| 32 | 0 | 71 | 33.32 | 133.31 |
+| 64 | 0 | 114 | 33.31 | 133.28 |
+
+All clients received snapshots. The workflow artifact contains tick work durations, payload byte counts and the applied queue configuration.
